@@ -18,7 +18,7 @@ class Iris(db.Model):
     sepal_width = db.Column(db.Float)
     petal_length = db.Column(db.Float)
     petal_width = db.Column(db.Float)
-    species = db.Column(db.String)
+    species = db.Column(db.String(30))
 
 
 class IrisSchema(ma.Schema):
