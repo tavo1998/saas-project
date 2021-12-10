@@ -1,9 +1,13 @@
+import os
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 
+MARIADB_USER = os.environ.get("MARIADB_USER")
+MARIADB_PASSWORD = os.environ.get("MARIADB_PASSWORD")
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mariadb+pymysql://{MARIADB_USER}:{MARIADB_PASSWORD}@master/saas'
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
