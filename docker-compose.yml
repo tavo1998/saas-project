@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  master:
+    image: mariadb
+    environment:
+      - MARIADB_USER=gramja
+      - MARIADB_PASSWORD=gramja
+      - MARIADB_ROOT_PASSWORD=gramja
+      - MARIADB_DATABASE=database
+    volumes:
+      - master-data:/var/lib/maysql
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - MARIADB_USER=root
+      - MARIADB_PASSWORD=gramja
+    depends_on:
+      - "master"
+
+volumes:
+  master-data:
