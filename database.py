@@ -1,13 +1,7 @@
 import sys
 import pymysql
 
-host = sys.argv[1]
-user = sys.argv[2]
-password = sys.argv[3]
-file_path = sys.argv[4]
-
-
-def load_to_database(cursor):
+def load_to_database(cursor, file_path):
   cursor.execute("USE saas")
   cursor.execute("""LOAD DATA LOCAL INFILE '{}'
                 INTO TABLE iris
@@ -18,15 +12,21 @@ def load_to_database(cursor):
                 """.format(file_path))
 
 def main():
-  if len(sys.argv) > 1 and sys.argv[1] == "help":
-    print("the parameters are: host user password file_path")
+  try:
+    host = sys.argv[1]
+    user = sys.argv[2]
+    password = sys.argv[3]
+    file_path = sys.argv[4]
+  except IndexError:
+    print("Something was wrong, verify parameters (host user password file_path)")
     return
+
   try:
     conn = pymysql.connect(host=host, user=user, password=password, local_infile=True)
     cur = conn.cursor()
-    load_to_database(cur)
+    load_to_database(cur, file_path)
   except:
-    print("Ocurrió un error, verifica los parametros (python3 database.py help)")
+    print("An error occurred with the database")
   finally:
     conn.commit()
     cur.close()
