@@ -6,7 +6,7 @@ services:
       - MARIADB_USER=gramja
       - MARIADB_PASSWORD=gramja
       - MARIADB_ROOT_PASSWORD=gramja
-      - MARIADB_DATABASE=database
+      - MARIADB_DATABASE=saas
     volumes:
       - master-data:/var/lib/maysql
   app:
