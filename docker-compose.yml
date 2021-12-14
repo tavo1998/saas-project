@@ -13,7 +13,7 @@ services:
     volumes:
       - master-data:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "3307:3306"
   
   slave:
     image: mariadb
@@ -35,6 +35,9 @@ services:
     environment:
       - MARIADB_USER=root
       - MARIADB_PASSWORD=gramja
+    networks:
+      saasnet:
+        ipv4_address: 172.25.0.18
     depends_on:
       - "master"
 
