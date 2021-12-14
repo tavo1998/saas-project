@@ -7,7 +7,7 @@ MARIADB_USER = os.environ.get("MARIADB_USER")
 MARIADB_PASSWORD = os.environ.get("MARIADB_PASSWORD")
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mariadb+pymysql://{MARIADB_USER}:{MARIADB_PASSWORD}@master/saas'
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mariadb+pymysql://{MARIADB_USER}:{MARIADB_PASSWORD}@172.25.0.13/saas'
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
