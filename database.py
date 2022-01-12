@@ -1,35 +1,23 @@
-import sys
-import pymysql
+import os
+from sqlalchemy import create_engine, MetaData, Table, Column
+from sqlalchemy.sql.sqltypes import Float, Integer, String
 
-def load_to_database(cursor, file_path):
-  cursor.execute("USE saas")
-  cursor.execute("""LOAD DATA LOCAL INFILE '{}'
-                INTO TABLE iris
-                FIELDS TERMINATED BY ','
-                LINES TERMINATED BY '\r\n'
-                IGNORE 1 LINES
-                (sepal_length, sepal_width, petal_length, petal_width, species)
-                """.format(file_path))
+MARIADB_USER = os.environ.get("MARIADB_USER")
+MARIADB_PASSWORD = os.environ.get("MARIADB_PASSWORD")
 
-def main():
-  try:
-    host = sys.argv[1]
-    user = sys.argv[2]
-    password = sys.argv[3]
-    file_path = sys.argv[4]
-  except IndexError:
-    print("Something was wrong, verify parameters (host user password file_path)")
-    return
+engine = create_engine(
+  f'mariadb+pymysql://{MARIADB_USER}:{MARIADB_PASSWORD}@master/saas',
+  connect_args={'local_infile': True}, 
+  echo=True
+)
+metadata = MetaData()
 
-  try:
-    conn = pymysql.connect(host=host, user=user, password=password, local_infile=True)
-    cur = conn.cursor()
-    load_to_database(cur, file_path)
-  except:
-    print("An error occurred with the database")
-  finally:
-    conn.commit()
-    cur.close()
-    conn.close()
+iris = Table("iris", metadata,
+              Column('id', Integer, primary_key=True),
+              Column('sepal_length', Float, nullable=False),
+              Column('sepal_width', Float, nullable=False),
+              Column('petal_length', Float, nullable=False),
+              Column('petal_width', Float, nullable=False),
+              Column('species', String(30), nullable=False))
 
-main()
+metadata.create_all(engine)
