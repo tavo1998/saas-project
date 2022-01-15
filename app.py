@@ -1,10 +1,6 @@
-import os
 from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
-
-MARIADB_USER = os.environ.get("MARIADB_USER")
-MARIADB_PASSWORD = os.environ.get("MARIADB_PASSWORD")
+from database import engine, iris
+from utils import insert_iris_csv, insert_record, get_records
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{MARIADB_USER}:{MARIADB_PASSWORD}@172.25.0.13/saas'
@@ -29,14 +25,18 @@ class IrisSchema(ma.Schema):
 @app.route('/', methods=['POST', 'GET'])
 def insert_flower():
     if request.method == 'POST':
-        new_flower = Iris(**request.json)
-        db.session.add(new_flower)
-        db.session.commit()
+        new_flower = request.json
+        insert_record(engine, new_flower, iris)
         return jsonify({'message': 'Flower added!'})
 
-    flowers = Iris.query.all()
-    flowersSchema = IrisSchema(many=True)
-    return jsonify({'message': flowersSchema.dump(flowers)})
+    with engine.connect() as conn:
+        rows = get_records(engine,iris)
+        return jsonify({'message': rows})
+
+@app.route('/iris-data', methods=['POST'])
+def insert_iris_data():
+    insert_iris_csv(engine)
+    return {"message": "Iris data inserted correctly"}
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
