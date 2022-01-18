@@ -11,15 +11,31 @@ services:
       - master-data:/var/lib/mysql
     ports:
       - "3306:3306"
-  app:
+  app1:
     build: .
     ports:
-      - "5000:5000"
+      - "5001:5000"
     environment:
       - MARIADB_USER=root
       - MARIADB_PASSWORD=gramja
     depends_on:
       - "master"
+  app2:
+    build: .
+    ports:
+      - "5002:5000"
+    environment:
+      - MARIADB_USER=root
+      - MARIADB_PASSWORD=gramja
+    depends_on:
+      - "master"
+  nginx:
+    build: ./nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - app1
+      - app2
 
 volumes:
   master-data:
