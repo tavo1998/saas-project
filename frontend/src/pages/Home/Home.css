@@ -1,0 +1,51 @@
+.background {
+    @apply min-h-screen flex items-center justify-center bg-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-900 bg-no-repeat bg-cover relative
+}
+
+.card {
+    @apply max-w-md w-full space-y-8 p-10 bg-white rounded-xl shadow-lg z-10    
+}
+
+.header {
+    @apply flex flex-col sm:flex-row items-center
+}
+
+.tittle {
+    @apply font-semibold text-lg mr-auto
+}
+
+.info-container {
+    @apply md:space-y-2 mb-3
+}
+
+.info-label {
+    @apply text-xs font-semibold text-gray-600 py-2
+}
+
+.row-container {
+    @apply md:flex flex-row md:space-x-4 w-full text-xs
+}
+
+.content {
+    @apply mb-3 space-y-2 w-full text-xs
+}
+
+.header {
+    @apply font-semibold text-gray-600 py-2
+}
+
+footer {
+    @apply mt-5 text-right md:space-x-3 md:block flex flex-col-reverse
+}
+
+.predict-button {
+    @apply mb-2 md:mb-0 bg-green-400 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-green-500
+}
+
+.input {
+    @apply appearance-none block w-full border rounded-lg h-10 px-4
+}
+
+.required {
+    @apply text-red-600 text-xs hidden
+}
