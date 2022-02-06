@@ -36,6 +36,12 @@ services:
     depends_on:
       - app1
       - app2
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - nginx
 
 volumes:
   master-data:

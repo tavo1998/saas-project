@@ -11,7 +11,7 @@
 }
 
 .tittle {
-    @apply font-semibold text-lg mr-auto
+    @apply font-semibold text-lg mr-auto text-black
 }
 
 .info-container {
@@ -48,4 +48,8 @@ footer {
 
 .required {
     @apply text-red-600 text-xs hidden
+}
+
+.result {
+    @apply text-sm font-semibold text-gray-600 py-4
 }
