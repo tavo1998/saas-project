@@ -35,11 +35,11 @@
 }
 
 footer {
-    @apply mt-5 text-right md:space-x-3 md:block flex flex-col-reverse
+    @apply mt-5 text-right md:space-x-6 md:block flex flex-col-reverse
 }
 
 .predict-button {
-    @apply mb-2 md:mb-0 bg-green-400 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-green-500
+    @apply my-2 md:mb-0 bg-green-400 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-green-500
 }
 
 .input {

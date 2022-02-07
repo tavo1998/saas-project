@@ -1,17 +1,47 @@
 async function TrainModel() {
-  await fetch("http://localhost:8080/train-model", {
+  return await fetch("http://localhost:8080/train-model", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+  })
+    .then((response) => response.json())
+    .catch((err) => {
+      console.error(err);
+    });
+}
+
+async function GetModelInfo() {
+  return await fetch("http://localhost:8080/model-info", {
+    method: "GET",
+    "headers": {}
+  })
+    .then((response) => {
+      if(response.status === 500) {
+        return false;
+      }
+      return response.json()
+    })
+    .catch((err) => {
+      console.log(err);
+      return err
+    });
+}
+
+async function Predict(body) {
+  return await fetch("http://localhost:8080/predict", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
-    body: JSON.stringify({
-      sepal_length: "5.8",
-      sepal_width: "2.7",
-      petal_length: "5.1",
-      petal_width: "1.9",
-    }),
-  }).then(res => res.json());
+    body: JSON.stringify(body),
+  })
+    .then((response) => response.json())
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
-export { TrainModel };
+export { TrainModel, GetModelInfo, Predict };

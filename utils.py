@@ -38,4 +38,4 @@ def train_model(df):
   classifier.fit(x_train,y_train)
   predictions=classifier.predict(x_test)
   print(x_test)
-  return accuracy_score(y_test,predictions), classifier
+  return accuracy_score(y_test,predictions), classifier, y.size

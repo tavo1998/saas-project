@@ -1,22 +1,80 @@
 import React, { Component } from "react";
 import "./Home.css";
-import { TrainModel } from "../../services/Api-connection";
+import {
+  TrainModel,
+  GetModelInfo,
+  Predict,
+} from "../../services/Api-connection";
 
 export default class Home extends Component {
   constructor() {
     super();
     this.state = {
-      sepalLength: '',
-      sepalWidth: '',
-      petalLength: '',
-      petalWidth: '',
-      prediction: ''
+      sepalLength: "",
+      sepalWidth: "",
+      petalLength: "",
+      petalWidth: "",
+      message: "",
+      trained: false,
     };
   }
 
+  componentDidMount() {
+    this.modelExists();
+  }
+
+  async modelExists() {
+    const ModelInfo = await GetModelInfo();
+    if (!ModelInfo) {
+      this.setState({
+        ...this.state,
+        trained: false,
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        trained: true,
+      });
+    }
+  }
+
   async predict() {
-    console.log(await TrainModel());
-      console.log(this.state);
+    const { Prediction } = await Predict({
+      sepal_length: Number(this.state.sepalLength),
+      sepal_width: Number(this.state.sepalWidth),
+      petal_length: Number(this.state.petalLength),
+      petal_width: Number(this.state.petalWidth),
+    });
+    this.setState({
+      ...this.state,
+      message: "Se predice que la flor es: " + Prediction,
+    });
+  }
+
+  async trainModel() {
+    const trainedModel1 = await TrainModel();
+    const trainedModel2 = await TrainModel();
+    if (trainedModel1 && trainedModel2) {
+      this.setState({
+        ...this.state,
+        trained: true,
+      });
+    }
+  }
+
+  async getModelInfo() {
+    const {message} = await GetModelInfo();
+
+    this.setState({
+      ...this.state,
+      message:
+        "Presición del modelo: " +
+        message.accuracy +
+        "%, tamaño del dataset con el que se entrenó: " +
+        message.dataset_size +
+        ", última fecha de entrenamiento: " +
+        message.date,
+    });
   }
 
   render() {
@@ -24,7 +82,7 @@ export default class Home extends Component {
       <div className="background">
         <div className="card">
           <div className="header">
-            <h2 className="tittle">Irisaaa</h2>
+            <h2 className="tittle">Iris</h2>
           </div>
           <div className="form">
             <div className="info-container">
@@ -41,7 +99,9 @@ export default class Home extends Component {
                   required="required"
                   type="number"
                   value={this.state.sepalLength}
-                  onChange={(e) => this.setState({ sepalLength: e.target.value })}
+                  onChange={(e) =>
+                    this.setState({ sepalLength: e.target.value })
+                  }
                 />
                 <p className="required">Este campo es requerido.</p>
               </div>
@@ -53,7 +113,9 @@ export default class Home extends Component {
                   required="required"
                   type="number"
                   value={this.state.sepalWidth}
-                  onChange={(e) => this.setState({ sepalWidth: e.target.value })}
+                  onChange={(e) =>
+                    this.setState({ sepalWidth: e.target.value })
+                  }
                 />
                 <p className="required">Este campo es requerido.</p>
               </div>
@@ -66,7 +128,9 @@ export default class Home extends Component {
                   className="input"
                   type="number"
                   value={this.state.petalLength}
-                  onChange={(e) => this.setState({ petalLength: e.target.value })}
+                  onChange={(e) =>
+                    this.setState({ petalLength: e.target.value })
+                  }
                 />
                 <p className="required">Este campo es requerido.</p>
               </div>
@@ -77,16 +141,39 @@ export default class Home extends Component {
                   className="input"
                   type="number"
                   value={this.state.petalWidth}
-                  onChange={(e) => this.setState({ petalWidth: e.target.value })}
+                  onChange={(e) =>
+                    this.setState({ petalWidth: e.target.value })
+                  }
                 />
                 <p className="required">Este campo es requerido.</p>
               </div>
             </div>
             <div className="result">
-                Se predice que la flor es: <label>{this.state.prediction}</label>
+              <label>{this.state.message}</label>
             </div>
             <footer>
-              <button className="predict-button" onClick={this.predict.bind(this)}>Predecir</button>
+              <button
+                className="predict-button"
+                onClick={this.trainModel.bind(this)}
+              >
+                Entrenar modelo
+              </button>
+              {this.state.trained && (
+                <>
+                  <button
+                    className="predict-button"
+                    onClick={this.getModelInfo.bind(this)}
+                  >
+                    Obtener información del modelo
+                  </button>
+                  <button
+                    className="predict-button"
+                    onClick={this.predict.bind(this)}
+                  >
+                    Predecir
+                  </button>
+                </>
+              )}
             </footer>
           </div>
         </div>
