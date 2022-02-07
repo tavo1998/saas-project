@@ -39,7 +39,7 @@ def get_training():
     f = open("dataset_info.txt", "w")
     f.write("{},{},{}".format(dataset_size, accuracy, date.today()))
     f.close()
-    return {'message': 'Modelo entrenado con una precisión de: {}'.format(accuracy)}
+    return {'message': 'Modelo entrenado con una precisión de: {}'.format(accuracy*100)}
 
 @app.route('/model-info', methods=['GET'])
 def get_model_info():
@@ -48,7 +48,7 @@ def get_model_info():
         info = f.read().split(",")
         return json_response({'message': {
             'dataset_size': info[0],
-            'accuracy': info[1],
+            'accuracy': float(info[1])*100,
             'date': info[2]
         }}, 200)
     except:

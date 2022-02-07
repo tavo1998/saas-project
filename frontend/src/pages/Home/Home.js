@@ -58,7 +58,7 @@ export default class Home extends Component {
       this.setState({
         ...this.state,
         trained: true,
-        message: "Modelo entrenado correctamente",
+        message: trainedModel1.message,
       });
     }
   }
