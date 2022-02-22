@@ -1,5 +1,5 @@
 .background {
-    @apply min-h-screen flex items-center justify-center bg-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-900 bg-no-repeat bg-cover relative
+    @apply min-h-screen flex items-center justify-center bg-center py-1 px-4 sm:px-6 lg:px-8 bg-gray-900 bg-no-repeat bg-cover relative
 }
 
 .card {
@@ -35,7 +35,7 @@
 }
 
 footer {
-    @apply mt-5 text-right md:space-x-6 md:block flex flex-col-reverse
+    @apply mt-5 text-right flex flex-col-reverse
 }
 
 .predict-button {
@@ -52,4 +52,8 @@ footer {
 
 .result {
     @apply text-sm font-semibold text-gray-600 py-4
+}
+
+.link {
+    @apply text-green-400 mt-2 hover:text-green-500 cursor-pointer flex flex-row-reverse mr-2
 }

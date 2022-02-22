@@ -15,17 +15,17 @@ async function TrainModel() {
 async function GetModelInfo() {
   return await fetch("http://localhost:8080/model-info", {
     method: "GET",
-    "headers": {}
+    headers: {},
   })
     .then((response) => {
-      if(response.status === 500) {
+      if (response.status === 500) {
         return false;
       }
-      return response.json()
+      return response.json();
     })
     .catch((err) => {
       console.log(err);
-      return err
+      return err;
     });
 }
 
@@ -44,4 +44,29 @@ async function Predict(body) {
     });
 }
 
-export { TrainModel, GetModelInfo, Predict };
+async function GetAllFlowers() {
+  return await fetch("http://localhost:8080", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+  })
+    .then((response) => response.json())
+    .catch((err) => console.log(err));
+}
+
+async function AddFlower(body) {
+  return await fetch("http://localhost:8080", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => response.json())
+    .catch((err) => console.log(err));
+}
+
+export { TrainModel, GetModelInfo, Predict, GetAllFlowers, AddFlower };

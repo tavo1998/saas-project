@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.background {
+  @apply min-h-screen flex items-center justify-center bg-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-900 bg-no-repeat bg-cover relative
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

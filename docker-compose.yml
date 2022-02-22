@@ -11,6 +11,17 @@ services:
       - master-data:/var/lib/mysql
     ports:
       - "3306:3306"
+  slave:
+    image: mariadb
+    environment:
+      - MARIADB_USER=gramja
+      - MARIADB_PASSWORD=gramja
+      - MARIADB_ROOT_PASSWORD=gramja
+      - MARIADB_DATABASE=saas
+    volumes:
+      - slave-data:/var/lib/mysql
+    ports:
+      - "3307:3306"
   app1:
     build: .
     ports:
@@ -42,6 +53,6 @@ services:
       - "3000:3000"
     depends_on:
       - nginx
-
 volumes:
   master-data:
+  slave-data:

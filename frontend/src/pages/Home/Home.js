@@ -4,11 +4,13 @@ import {
   TrainModel,
   GetModelInfo,
   Predict,
+  AddFlower,
 } from "../../services/Api-connection";
+import { Link } from "react-router-dom";
 
 export default class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       sepalLength: "",
       sepalWidth: "",
@@ -51,6 +53,38 @@ export default class Home extends Component {
     });
   }
 
+  async saveAndPredict() {
+    const { Prediction } = await Predict({
+      sepal_length: Number(this.state.sepalLength),
+      sepal_width: Number(this.state.sepalWidth),
+      petal_length: Number(this.state.petalLength),
+      petal_width: Number(this.state.petalWidth),
+    });
+
+    AddFlower({
+      sepal_length: Number(this.state.sepalLength),
+      sepal_width: Number(this.state.sepalWidth),
+      petal_length: Number(this.state.petalLength),
+      petal_width: Number(this.state.petalWidth),
+      species: Prediction,
+    }).then(() => {
+      this.setState({
+        ...this.state,
+        message:
+          "Se predice que la flor es: " +
+          Prediction +
+          " y se guardó correctamente",
+      })
+    })
+    .catch((err) => {
+      this.setState({
+        ...this.state,
+        message: "No se pudo guardar la flor",
+      })
+      console.log(err)
+    })
+  }
+
   async trainModel() {
     const trainedModel1 = await TrainModel();
     const trainedModel2 = await TrainModel();
@@ -64,7 +98,7 @@ export default class Home extends Component {
   }
 
   async getModelInfo() {
-    const {message} = await GetModelInfo();
+    const { message } = await GetModelInfo();
 
     this.setState({
       ...this.state,
@@ -80,7 +114,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="background">
+      <div className="flex flex-col">
         <div className="card">
           <div className="header">
             <h2 className="tittle">Iris</h2>
@@ -159,25 +193,36 @@ export default class Home extends Component {
               >
                 Entrenar modelo
               </button>
-              {this.state.trained && (
-                <>
-                  <button
-                    className="predict-button"
-                    onClick={this.getModelInfo.bind(this)}
-                  >
-                    Obtener información del modelo
-                  </button>
-                  <button
-                    className="predict-button"
-                    onClick={this.predict.bind(this)}
-                  >
-                    Predecir
-                  </button>
-                </>
-              )}
+              <>
+                {this.state.trained && (
+                  <div className="flex flex-col">
+                    <button
+                      className="predict-button"
+                      onClick={this.getModelInfo.bind(this)}
+                    >
+                      Obtener información del modelo
+                    </button>
+                    <button
+                      className="predict-button"
+                      onClick={this.predict.bind(this)}
+                    >
+                      Predecir
+                    </button>
+                    <button
+                      className="predict-button"
+                      onClick={this.saveAndPredict.bind(this)}
+                    >
+                      Guardar y Predecir
+                    </button>
+                  </div>
+                )}
+              </>
             </footer>
           </div>
         </div>
+        <Link to="/table" className="link">
+          Ir a la lista de flores &#8594;
+        </Link>
       </div>
     );
   }
